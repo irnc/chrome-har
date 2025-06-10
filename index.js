@@ -196,39 +196,10 @@ export function harFromMessages(messages, options) {
             pageref: currentPageId,
             request: req,
             time: 0,
-            _initiator_detail: JSON.stringify(params.initiator),
-            _initiator_type: params.initiator.type,
+            _initiator: params.initiator,
             // Chrome's DevTools Frontend returns this field in lower case
             _resourceType: params.type ? params.type.toLowerCase() : undefined
           };
-
-          // The object initiator change according to its type
-          switch (params.initiator.type) {
-            case 'parser': {
-              {
-                entry._initiator = params.initiator.url;
-                entry._initiator_line = params.initiator.lineNumber + 1; // Because lineNumber is 0 based
-              }
-              break;
-            }
-
-            case 'script': {
-              {
-                if (
-                  params.initiator.stack &&
-                  params.initiator.stack.callFrames.length > 0
-                ) {
-                  const topCallFrame = params.initiator.stack.callFrames[0];
-                  entry._initiator = topCallFrame.url;
-                  entry._initiator_line = topCallFrame.lineNumber + 1; // Because lineNumber is 0 based
-                  entry._initiator_column = topCallFrame.columnNumber + 1; // Because columnNumber is 0 based
-                  entry._initiator_function_name = topCallFrame.functionName;
-                  entry._initiator_script_id = topCallFrame.scriptId;
-                }
-              }
-              break;
-            }
-          }
 
           if (params.redirectResponse) {
             populateRedirectResponse(page, params, entries, options);
