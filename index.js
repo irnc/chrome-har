@@ -190,6 +190,8 @@ export function harFromMessages(messages, options) {
             __requestWillBeSentTime: params.timestamp,
             __wallTime: params.wallTime,
             _requestId: params.requestId,
+            _loaderId: params.loaderId,
+            _frameId: params.frameId,
             __frameId: params.frameId,
             _initialPriority: request.initialPriority,
             _priority: request.initialPriority,
