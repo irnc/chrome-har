@@ -20,7 +20,8 @@ const log = debug('chrome-har');
 
 const defaultOptions = {
   includeResourcesFromDiskCache: false,
-  includeTextFromResponseBody: false
+  includeTextFromResponseBody: false,
+  ignoreRequestsWithUnsupportedProtocol: true
 };
 const isEmpty = o => !o;
 
@@ -150,7 +151,10 @@ export function harFromMessages(messages, options) {
       case 'Network.requestWillBeSent': {
         {
           const request = params.request;
-          if (!isSupportedProtocol(request.url)) {
+          if (
+            options.ignoreRequestsWithUnsupportedProtocol &&
+            !isSupportedProtocol(request.url)
+          ) {
             ignoredRequests.add(params.requestId);
             continue;
           }
